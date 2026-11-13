@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS Typewriter Demo</title>
+  <style>
+    /* Page styling for centered presentation */
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background-color: #121826;
+      color: #f8fafc;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      margin: 0;
+    }
+
+    /* Your Typewriter CSS */
+    .typewriter {
+      --caret: currentcolor;
+      color: #38bdf8;
+    }
+
+    .typewriter::before {
+      content: "";
+      animation: typing 13.5s infinite;
+    }
+
+    .typewriter::after {
+      content: "";
+      border-right: 1px solid var(--caret);
+      animation: blink 0.5s linear infinite;
+    }
+
+    /* Type the first word one letter at a time. */
+    @keyframes typing {
+      0.0000%, 27.3488% { content: ""; }
+      1.1395%, 26.2093% { content: "d"; }
+      2.2791%, 25.0698% { content: "de"; }
+      3.4186%, 23.9302% { content: "dev"; }
+      4.5581%, 22.7907% { content: "deve"; }
+      5.6977%, 21.6512% { content: "devel"; }
+      6.8372%, 20.5116% { content: "develo"; }
+      7.9767%, 19.3721% { content: "develop"; }
+      9.1163%, 18.2326% { content: "develope"; }
+      10.2558%, 17.0930% { content: "developer"; }
+      /* Repeat the same pattern for the remaining words. */
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      /* Swap the typing effect for slower word changes. */
+      .typewriter::after {
+        animation: none;
+      }
+
+      @keyframes sequence-popup {
+        0%, 100% { content: "developer"; }
+        25% { content: "writer"; }
+        50% { content: "reader"; }
+        75% { content: "human"; }
+      }
+
+      .typewriter::before {
+        content: "developer";
+        animation: sequence-popup 12s linear infinite;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Screen-reader friendly heading -->
+  <h1 aria-label="Hi! I'm a developer">
+    Hi! I'm a&nbsp;<span class="typewriter"></span>
+  </h1>
+
+</body>
+</html>

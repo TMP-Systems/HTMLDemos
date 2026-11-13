@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wavy Text Animation Demo</title>
+  <style>
+    /* Basic page styling to center the demo */
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      background-color: #111827;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+
+    .waviy {
+      font-size: 3.5rem;
+      font-weight: 800;
+      color: #38bdf8;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    /* Your provided CSS */
+    .waviy span {
+      position: relative;
+      display: inline-block;
+      animation: waviy 1s infinite;
+      /* Uses each span's custom index to stagger the wave animation. */
+      animation-delay: calc(0.1s * var(--i));
+    }
+
+    @keyframes waviy {
+      0%, 40%, 100% {
+        transform: translateY(0);
+      }
+      20% {
+        transform: translateY(-20px);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      /* Disables the wave animation so the text remains stationary. */
+      .waviy span {
+        animation: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="waviy" aria-label="Loading...">
+    <span style="--i:1" aria-hidden="true">L</span>
+    <span style="--i:2" aria-hidden="true">O</span>
+    <span style="--i:3" aria-hidden="true">A</span>
+    <span style="--i:4" aria-hidden="true">D</span>
+    <span style="--i:5" aria-hidden="true">I</span>
+    <span style="--i:6" aria-hidden="true">N</span>
+    <span style="--i:7" aria-hidden="true">G</span>
+    <span style="--i:8" aria-hidden="true">.</span>
+    <span style="--i:9" aria-hidden="true">.</span>
+    <span style="--i:10" aria-hidden="true">.</span>
+  </div>
+
+</body>
+</html>

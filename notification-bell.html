@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Animated Toast Notification Demo</title>
+  <style>
+    /* --- Your Provided CSS --- */
+    :root {
+      --tr: all 0.5s ease 0s;
+      --cs1: #005e38;
+      --cs2: #03a65a;
+      --cs3: #03a65a40;
+    }
+
+    .toast-item {
+      overflow: hidden;
+      max-height: 25rem;
+      transition: var(--tr);
+      animation: show-toast 4s ease 3s 1;
+    }
+
+    @keyframes show-toast {
+      0%, 50%, 100% {
+        max-height: 0;
+        opacity: 0;
+      }
+      10%, 25% {
+        max-height: 15rem;
+        opacity: 1;
+      }
+    }
+
+    .toast {
+      background: linear-gradient(90deg, #1f2333, #22232b);
+      color: #f5f5f5;
+      padding: 1rem 2rem 1rem 6rem;
+      border-radius: 0.25rem;
+      transition: var(--tr);
+      /* Added layout & variable usage to showcase your tokens */
+      position: relative;
+      border-left: 0.35rem solid var(--clr);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+    }
+
+    .toast.success {
+      --bg: var(--cs1);
+      --clr: var(--cs2);
+      --brd: var(--cs3);
+    }
+
+    input[type="checkbox"] {
+      display: none;
+    }
+
+    #t-success:checked ~ .toast-panel .toast-item.success {
+      max-height: 0;
+      opacity: 0;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .toast-item,
+      .toast {
+        animation: none;
+        transition: none;
+      }
+    }
+
+    /* --- Demo Page & Decorative Toast Elements --- */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #13151f;
+      color: #e2e8f0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .demo-controls {
+      text-align: center;
+      max-width: 440px;
+      background: #1b1e2b;
+      padding: 2rem;
+      border-radius: 0.5rem;
+      border: 1px solid #2d3246;
+    }
+
+    .demo-controls h1 {
+      font-size: 1.25rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .demo-controls p {
+      font-size: 0.9rem;
+      color: #94a3b8;
+      line-height: 1.5;
+      margin-bottom: 1.25rem;
+    }
+
+    .replay-btn {
+      background: var(--cs2);
+      color: #fff;
+      border: none;
+      padding: 0.6rem 1.25rem;
+      border-radius: 0.25rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .replay-btn:hover {
+      background: var(--cs1);
+    }
+
+    /* Toast Panel Positioning */
+    .toast-panel {
+      position: fixed;
+      top: 1.5rem;
+      right: 1.5rem;
+      width: min(90vw, 400px);
+      z-index: 100;
+    }
+
+    /* Icon Badge using your --bg, --clr, and --brd variables */
+    .toast::before {
+      content: "✓";
+      position: absolute;
+      left: 1.35rem;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+      background: var(--bg);
+      color: var(--clr);
+      border: 2px solid var(--brd);
+      display: grid;
+      place-items: center;
+      font-size: 1.35rem;
+      font-weight: bold;
+    }
+
+    .toast h3 {
+      font-size: 1.05rem;
+      margin-bottom: 0.25rem;
+      color: #ffffff;
+    }
+
+    .toast p {
+      font-size: 0.875rem;
+      color: #cbd5e1;
+      line-height: 1.4;
+    }
+
+    /* Close Label linked to #t-success */
+    .close-btn {
+      position: absolute;
+      top: 0.65rem;
+      right: 0.85rem;
+      font-size: 1.25rem;
+      line-height: 1;
+      color: #94a3b8;
+      cursor: pointer;
+      transition: color 0.2s ease;
+    }
+
+    .close-btn:hover {
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hidden checkbox controlling dismissal -->
+  <input type="checkbox" id="t-success">
+
+  <!-- Toast Container -->
+  <div class="toast-panel">
+    <div class="toast-item success" id="toastItem">
+      <div class="toast success">
+        <label for="t-success" class="close-btn" title="Dismiss">&times;</label>
+        <h3>Success!</h3>
+        <p>Your changes have been saved successfully.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Helper UI to replay the 3s delayed animation -->
+  <div class="demo-controls">
+    <h1>Toast Animation Demo</h1>
+    <p>
+      Because your keyframe rule specifies <code>animation: show-toast 4s ease 3s 1</code>, 
+      the toast waits <strong>3 seconds</strong> after load, appears briefly, and auto-hides. 
+      Click the <strong>&times;</strong> button while visible to test the checkbox dismissal.
+    </p>
+    <button class="replay-btn" onclick="replayToast()">Replay Animation</button>
+  </div>
+
+  <script>
+    function replayToast() {
+      const checkbox = document.getElementById('t-success');
+      const toastItem = document.getElementById('toastItem');
+      
+      // Reset checkbox state
+      checkbox.checked = false;
+
+      // Restart CSS keyframe animation
+      toastItem.style.animation = 'none';
+      void toastItem.offsetWidth; // Trigger reflow
+      toastItem.style.animation = '';
+    }
+  </script>
+
+</body>
+</html>

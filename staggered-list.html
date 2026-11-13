@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Staggered List Fade-In Demo</title>
+  <style>
+    /* Basic page styling for the demo */
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background-color: #f8fafc;
+      color: #1e293b;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 1.5rem;
+    }
+
+    .demo-container {
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .replay-btn {
+      background-color: #2563eb;
+      color: white;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      margin-bottom: 1.25rem;
+      transition: background-color 0.2s;
+    }
+
+    .replay-btn:hover {
+      background-color: #1d4ed8;
+    }
+
+    .list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    /* =========================================
+       YOUR ANIMATION CODE (Compiled to CSS)
+       ========================================= */
+    .list__item {
+      background: white;
+      padding: 1rem 1.25rem;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      border: 1px solid #e2e8f0;
+
+      /* Initial state before animation starts */
+      opacity: 0;
+      transform: translateY(-15%);
+      /* Keep the final state after each item finishes animating */
+      animation: fade-in 500ms ease-out forwards;
+    }
+
+    /* Compiled output of your @for loop */
+    .list__item:nth-of-type(1) {
+      animation-delay: calc(sin(45deg) * 1ms * 100); /* ~70.7ms */
+    }
+    .list__item:nth-of-type(2) {
+      animation-delay: calc(sin(45deg) * 2ms * 100); /* ~141.4ms */
+    }
+    .list__item:nth-of-type(3) {
+      animation-delay: calc(sin(45deg) * 3ms * 100); /* ~212.1ms */
+    }
+    .list__item:nth-of-type(4) {
+      animation-delay: calc(sin(45deg) * 4ms * 100); /* ~282.8ms */
+    }
+    .list__item:nth-of-type(5) {
+      animation-delay: calc(sin(45deg) * 5ms * 100); /* ~353.5ms */
+    }
+
+    @keyframes fade-in {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      /* Show every item at once instead of staggering them */
+      .list__item {
+        animation: none;
+        opacity: 1;
+        transform: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="demo-container">
+    <button class="replay-btn" id="replay">Replay Animation</button>
+
+    <ul class="list" id="demo-list">
+      <li class="list__item"><strong>Item 1</strong> — Delay: ~71ms</li>
+      <li class="list__item"><strong>Item 2</strong> — Delay: ~141ms</li>
+      <li class="list__item"><strong>Item 3</strong> — Delay: ~212ms</li>
+      <li class="list__item"><strong>Item 4</strong> — Delay: ~283ms</li>
+      <li class="list__item"><strong>Item 5</strong> — Delay: ~354ms</li>
+    </ul>
+  </div>
+
+  <script>
+    // Simple helper to restart the CSS animation on button click
+    document.getElementById('replay').addEventListener('click', () => {
+      const list = document.getElementById('demo-list');
+      const items = list.querySelectorAll('.list__item');
+      
+      items.forEach(item => {
+        item.style.animation = 'none';
+        item.offsetHeight; // Trigger browser reflow
+        item.style.animation = '';
+      });
+    });
+  </script>
+
+</body>
+</html>
